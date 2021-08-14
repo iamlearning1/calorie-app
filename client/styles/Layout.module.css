@@ -1,0 +1,30 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  width: 100vw;
+  min-width: 100vw;
+}
+
+.header h1 {
+  color: #fff;
+  font-size: 28px;
+  width: 85%;
+  cursor: pointer;
+}
+
+.header div {
+  width: 15%;
+  display: flex;
+  justify-content: space-between;
+}
+
+#logout {
+  background: #ec5a5a;
+  color: #fff;
+}
+
+.content {
+  background: #fff;
+}

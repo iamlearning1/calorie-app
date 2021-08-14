@@ -1,12 +1,20 @@
-import type { NextPage } from 'next';
-import { Button } from 'antd';
+import {
+  Button, Card, Input, Typography,
+} from 'antd';
+import Link from 'next/link';
 
-import styles from '../styles/Home.module.css';
+import styles from '../styles/Login.module.css';
 
-const Home: NextPage = () => (
+const Extra = <Link href="/signup"><Typography.Link>Sign Up</Typography.Link></Link>;
+
+const Login = () => (
   <div className={styles.container}>
-    {/* <Button type="default">sdfs</Button> */}
+    <Card title={<Typography.Title>Login</Typography.Title>} className={styles.login} extra={Extra}>
+      <Input placeholder="Please enter your email" type="text" size="large" />
+      <Input placeholder="Please enter your password" type="password" size="large" />
+      <Button type="primary" size="large">Login</Button>
+    </Card>
   </div>
 );
 
-export default Home;
+export default Login;
