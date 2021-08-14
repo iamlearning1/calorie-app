@@ -1,0 +1,17 @@
+# client
+client/node_modules
+client/.pnp
+client/.pnp.js
+client/coverage
+client/.next/
+client/out/
+client/build
+client/npm-debug.log*
+client/.env.*
+client/.DS_Store
+
+# api
+api/node_modules
+api/.DS_Store
+
+.DS_Store
