@@ -23,12 +23,13 @@ const LayoutComponent = (props: Props) => {
 
   const dispatch = useAppDispatch();
 
-  const authenticated = useAppSelector(state => state.user.authenticated);
+  const authenticated = useAppSelector((state) => state.user.authenticated);
+  const user = useAppSelector((state) => state.user.user);
 
   const [share, showShare] = useState(false);
 
   const logoutUser = () => {
-    dispatch(logout())
+    dispatch(logout());
     router.replace('/');
   };
 
@@ -40,7 +41,7 @@ const LayoutComponent = (props: Props) => {
     const token = localStorage.getItem('token');
     if (token && !authenticated) dispatch(userDetails());
     else router.replace('/');
-  }, [])
+  }, []);
 
   return (
     <Layout>
@@ -49,13 +50,15 @@ const LayoutComponent = (props: Props) => {
       </Modal>
       <Header className={styles.header}>
         <Tooltip title="Go to home" placement="bottomLeft">
-          <h1 onClick={() => router.push('/')}>Calorie Tracking</h1>
-
+          <h1 onClick={() => router.push(authenticated ? '/home' : '/')}>Calorie Tracking</h1>
         </Tooltip>
-        {authenticated && <div>
-          <Button id={styles.share} type="primary" shape="round" onClick={() => showShare(true)}>Share</Button>
+        {authenticated && (
+        <div>
+          {user?.role === 'user' && <Button type="primary" shape="round" onClick={() => router.push('/addmeal')}>Add Meal</Button>}
+          <Button type="primary" shape="round" onClick={() => showShare(true)}>Share</Button>
           <Button id={styles.logout} shape="round" onClick={logoutUser}>Logout</Button>
-        </div>}
+        </div>
+        )}
       </Header>
       <Content className={styles.content}>
         {children}

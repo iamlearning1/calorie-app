@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import {
-  Button, Card, Input, Typography, Form, message
+  Button, Card, Input, Typography, Form, message,
 } from 'antd';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -20,21 +20,21 @@ const Login = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  const loading = useAppSelector(state => state.user.loading);
-  const authenticated = useAppSelector(state => state.user.authenticated);
-  const error = useAppSelector(state => state.user.error);
+  const loading = useAppSelector((state) => state.user.loading);
+  const authenticated = useAppSelector((state) => state.user.authenticated);
+  const error = useAppSelector((state) => state.user.error);
 
   const onFinish = async (values :any) => {
-    dispatch(userLogin({email: values.Email, password: values.Password}));
+    dispatch(userLogin({ email: values.Email, password: values.Password }));
   };
 
   useEffect(() => {
     if (authenticated) router.replace('/home');
-  }, [authenticated])
+  }, [authenticated]);
 
   useEffect(() => {
     if (error) message.error(error);
-  }, [error])
+  }, [error]);
 
   const validateMessages = {
     types: {

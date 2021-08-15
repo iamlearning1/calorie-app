@@ -8,7 +8,8 @@ const roles = {
     details: true,
   },
   user: {
-    meals: true,
+    selfMeals: true,
+    addmeal: true,
     users: false,
     details: true,
   },
@@ -35,7 +36,7 @@ const authenticate = (resource) => {
       next();
     } catch (error) {
       console.error(error);
-      return res.status(401).send();
+      return res.status(401).send({ message: 'Please login again' });
     }
   };
 };

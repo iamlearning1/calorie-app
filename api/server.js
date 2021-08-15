@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 
 const userRouter = require('./router/user');
+const mealRouter = require('./router/meal');
 
 const { PORT = 5000 } = process.env;
 
@@ -23,5 +24,6 @@ app.use(
 app.use(cors());
 
 app.use('/api/user', userRouter);
+app.use('/api/meal', mealRouter);
 
 app.listen(PORT, () => console.info('Server running at port', PORT));

@@ -1,27 +1,26 @@
 import { Space, Typography } from 'antd';
-import Meals from '../components/Meals';
 
-import { useAppSelector, useAppDispatch } from '../app/hooks';
-import { logout } from '../app/userSlice';
+import Meals from '../components/Meals';
+import Users from '../components/Users';
+
+import { useAppSelector } from '../app/hooks';
 
 import styles from '../styles/Home.module.css';
 
 const Home = () => {
-  const dispatch = useAppDispatch();
-
-  
-  const user = useAppSelector(state => state.user.user);
-  console.log(user)
+  const user = useAppSelector((state) => state.user.user);
 
   return (
-  <div className={styles.container}>
-    <Typography.Title>
-      Welcome {user?.name}
-    </Typography.Title>
-    <Space />
-    <Meals />
-  </div>
-)
-  };
+    <div className={styles.container}>
+      <Typography.Title>
+        Welcome
+        {' '}
+        {user?.name}
+      </Typography.Title>
+      <Space />
+      {user?.role === 'user' ? <Meals /> : <Users />}
+    </div>
+  );
+};
 
 export default Home;

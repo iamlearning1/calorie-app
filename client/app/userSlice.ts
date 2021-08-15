@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { details, login } from './authAPI';
 
@@ -27,25 +27,25 @@ export const userLogin = createAsyncThunk(
   'user/login',
   async (creds: {email: string, password: string}, { rejectWithValue }) => {
     try {
-      const {data} = await login(creds.email, creds.password);
+      const { data } = await login(creds.email, creds.password);
       return data;
     } catch (error) {
       return rejectWithValue(error.response.data.message);
     }
-  }
+  },
 );
 
 export const userDetails = createAsyncThunk(
   'user/details',
   async (_, { rejectWithValue }) => {
     try {
-      const {data} = await details();
+      const { data } = await details();
       return data;
     } catch (error) {
       return rejectWithValue(error.response.data.message);
     }
-  }
-)
+  },
+);
 
 export const userSlice = createSlice({
   name: 'user',
@@ -56,7 +56,7 @@ export const userSlice = createSlice({
       state.user = null;
       state.error = '';
       localStorage.removeItem('token');
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -87,7 +87,7 @@ export const userSlice = createSlice({
       .addCase(userDetails.rejected, (state, action) => {
         state.error = action.payload as string;
         state.loading = false;
-      })
+      });
   },
 });
 

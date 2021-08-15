@@ -10,12 +10,12 @@
 .header h1 {
   color: #fff;
   font-size: 28px;
-  width: 85%;
+  width: 75%;
   cursor: pointer;
 }
 
 .header div {
-  width: 15%;
+  width: 25%;
   display: flex;
   justify-content: space-between;
 }

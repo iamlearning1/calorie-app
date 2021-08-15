@@ -4,7 +4,7 @@ import {
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import api from '../utils/api'; 
+import api from '../utils/api';
 
 import styles from '../styles/Login.module.css';
 
@@ -25,18 +25,17 @@ const Signup = () => {
 
   const onFinish = async (values :any) => {
     try {
-      const {data} = await api.post('/user/signup', {
+      const { data } = await api.post('/user/signup', {
         name: values.Name,
         email: values.Email,
         password: values.Password,
-      })
+      });
 
       message.success(data.message);
-      message.info('Please login with your newely created account' , 1000)
+      message.info('Please login with your newely created account', 1000);
       router.push('/');
     } catch (error) {
-      console.error(error)
-      message.error(error.message.data.message)
+      message.error(error.message.data.message);
     }
   };
 
@@ -72,16 +71,16 @@ const Signup = () => {
           <Form.Item
             name="Confirm Password"
             dependencies={['Password']}
-            rules={[{ required: true, type: 'string' }, 
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                if (!value || getFieldValue('Password') === value) {
-                  return Promise.resolve();
-                }
-                return Promise.reject(new Error('Passwords do not match!'));
-              },
-            }),
-          ]}
+            rules={[{ required: true, type: 'string' },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue('Password') === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error('Passwords do not match!'));
+                },
+              }),
+            ]}
           >
             <Input placeholder="Please confirm your password" type="password" size="large" />
           </Form.Item>
