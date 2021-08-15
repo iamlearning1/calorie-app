@@ -18,7 +18,7 @@ app.use(
   urlencoded({
     limit: '50mb',
     extended: true,
-  })
+  }),
 );
 
 app.use(cors());

@@ -9,6 +9,7 @@ import styles from '../styles/Home.module.css';
 
 const Home = () => {
   const user = useAppSelector((state) => state.user.user);
+  const authenticated = useAppSelector((state) => state.user.authenticated);
 
   return (
     <div className={styles.container}>
@@ -18,7 +19,8 @@ const Home = () => {
         {user?.name}
       </Typography.Title>
       <Space />
-      {user?.role === 'user' ? <Meals /> : <Users />}
+      {authenticated && user?.role === 'user' && <Meals />}
+      {authenticated && user?.role === 'admin' && <Users />}
     </div>
   );
 };

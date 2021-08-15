@@ -1,11 +1,14 @@
 import {
   Form, Select, Typography, Input, DatePicker, Button, message,
 } from 'antd';
+import { useRouter } from 'next/router';
 import moment from 'moment';
 import { useEffect } from 'react';
 
 import { useAppSelector, useAppDispatch } from '../app/hooks';
-import { addMeal } from '../app/mealSlice';
+import {
+  addMeal, getMeal, updateMeal, resetMessage,
+} from '../app/mealSlice';
 
 import styles from '../styles/AddMeal.module.css';
 
@@ -13,28 +16,63 @@ const { Option } = Select;
 const { Item } = Form;
 
 const AddMeal = () => {
+  const router = useRouter();
+
+  const { query } = router;
   const dispatch = useAppDispatch();
 
   const loading = useAppSelector((state) => state.meal.loading);
+  const meal = useAppSelector((state) => state.meal.meal);
   const response = useAppSelector((state) => state.meal.message);
 
   const [form] = Form.useForm();
 
   useEffect(() => {
-    if (response) message.info(response);
-  }, [response]);
+    if (query?.mealId) dispatch(getMeal(query.mealId as string));
+  }, [query]);
 
   const onFinish = (values: any) => {
     if (values.calories <= 0) {
       message.info('Please provide a valid calorie value');
       return;
     }
-    dispatch(addMeal(values));
+
+    if (query?.mealId) {
+      dispatch(updateMeal({ ...values, id: query.mealId }));
+    } else if (query.userId) {
+      dispatch(addMeal({ ...values, user: query.userId }));
+    } else dispatch(addMeal(values));
   };
+
+  useEffect(() => {
+    if (meal && query?.mealId) {
+      form.setFieldsValue({
+        name: meal?.name,
+        type: meal?.type,
+        date: moment(meal?.date),
+        calories: meal?.calories,
+      });
+    }
+  }, [meal]);
+
+  useEffect(() => {
+    if (response) message.info(response);
+  }, [response]);
+
+  useEffect(() => () => {
+    dispatch(resetMessage());
+  }, []);
 
   return (
     <div className={styles.container}>
-      <Typography.Title>Add a new meal</Typography.Title>
+      {query.mealId && <Typography.Title>Update meal</Typography.Title>}
+      {query.userId && (
+      <Typography.Title>
+        Add a new meal for
+        {query.email}
+      </Typography.Title>
+      )}
+      {!query.userId && !query.mealId && <Typography.Title>Add a new meal</Typography.Title>}
       <Form
         form={form}
         labelCol={{ span: 4 }}
@@ -78,7 +116,7 @@ const AddMeal = () => {
         </Item>
         <Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit" loading={loading} disabled={loading}>
-            Add
+            {query?.mealId ? 'Update' : 'Add'}
           </Button>
           <Button onClick={() => form.resetFields()} style={{ marginLeft: '20px' }}>Reset</Button>
         </Item>

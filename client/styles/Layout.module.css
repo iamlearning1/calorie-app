@@ -5,6 +5,7 @@
   position: fixed;
   width: 100vw;
   min-width: 100vw;
+  z-index: 2;
 }
 
 .header h1 {

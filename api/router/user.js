@@ -1,11 +1,18 @@
 const { Router } = require('express');
 
 const authenticate = require('../middleware');
-const { login, signup, details } = require('../controller/user');
+const {
+  login,
+  signup,
+  details,
+  allUsersWithMeals,
+} = require('../controller/user');
 
 const router = new Router();
 
 router.get('/details', authenticate('details'), details);
+
+router.get('/all', authenticate('users'), allUsersWithMeals);
 
 router.post('/login', login);
 

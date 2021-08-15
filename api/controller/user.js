@@ -15,8 +15,7 @@ const login = async (req, res) => {
 
     const passwordValid = await comparePassword(password, user.password);
 
-    if (!passwordValid)
-      throw new Error(`User with email ${email} password not valid`);
+    if (!passwordValid) throw new Error(`User with email ${email} password not valid`);
 
     delete user.password;
 
@@ -44,7 +43,7 @@ const signup = async (req, res) => {
     });
 
     console.info(
-      `User with email ${email} created successfully, User ID: ${user._id}`
+      `User with email ${email} created successfully, User ID: ${user._id}`,
     );
 
     return res.send({ message: 'User created successfully' });
@@ -67,4 +66,26 @@ const details = async (req, res) => {
   }
 };
 
-module.exports = { login, signup, details };
+const allUsersWithMeals = async (req, res) => {
+  try {
+    const users = await User.aggregate([
+      {
+        $lookup: {
+          from: 'meals',
+          localField: '_id',
+          foreignField: 'user',
+          as: 'meals',
+        },
+      },
+    ]);
+
+    return res.send(users);
+  } catch (error) {
+    console.error(error);
+    return res.status(400).send({ message: 'Something went wrong' });
+  }
+};
+
+module.exports = {
+  login, signup, details, allUsersWithMeals,
+};

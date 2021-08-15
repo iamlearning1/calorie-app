@@ -1,6 +1,6 @@
-import { Spin, Typography } from 'antd';
-import moment from 'moment';
 import { useEffect } from 'react';
+import { Spin, Tag, Collapse } from 'antd';
+import moment from 'moment';
 
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { getMeals } from '../app/mealSlice';
@@ -20,46 +20,67 @@ const Meals = () => {
   if (loading) return <div className={styles.container}><Spin /></div>;
 
   return (
-    <div className={styles.container}>
+    <Collapse className={styles.list}>
       {
-        Object.keys(meals).map((date: string) => (
-          <div key={date}>
-            <span className={styles.title}>
-              <Typography.Text>
-                Date:
-                {date}
-              </Typography.Text>
-              <Typography.Text>
-                Calories:
-                {meals[date].reduce((a: number, b: any) => a + b.calories, 0)}
-              </Typography.Text>
-            </span>
-            <div className={styles.meals}>
-              {meals[date].map((meal: any) => (
-                <div key={meal._id} className={styles.meal}>
-                  <Typography.Text>
-                    Meal:
-                    {meal.type}
-                  </Typography.Text>
-                  <Typography.Text>
-                    Name:
-                    {meal.name}
-                  </Typography.Text>
-                  <Typography.Text>
-                    Calories:
-                    {meal.calories}
-                  </Typography.Text>
-                  <Typography.Text>
-                    Time:
-                    {moment(meal.date).format('hh:mm:ss')}
-                  </Typography.Text>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))
+        Object.keys(meals).map((date: string) => {
+          const calories = meals[date].reduce((a: number, b: any) => a + b.calories, 0);
+          return (
+            <Collapse.Panel
+              key={date}
+              header={date}
+              extra={(
+                <Tag color="blue" className={styles.calories}>
+                  Calories:
+                  {calories}
+                </Tag>
+)}
+              className={styles.panel}
+            >
+              <div className={styles.meals}>
+                {meals[date].map((meal: any) => (
+                  <div key={meal._id} className={styles.meal}>
+                    <div>
+                      <span>
+                        Meal:
+                      </span>
+                      <span>
+                        <Tag color="orange">{meal.type}</Tag>
+                      </span>
+                    </div>
+                    <div>
+                      <span>
+                        Name:
+                      </span>
+                      <span>
+                        <Tag color="green">{meal.name}</Tag>
+                      </span>
+                    </div>
+                    <div>
+                      <span>
+                        Calories:
+                      </span>
+                      <span>
+                        <Tag color="blue">{meal.calories}</Tag>
+                      </span>
+                    </div>
+                    <div>
+                      <span>
+                        Time:
+                      </span>
+                      <span>
+                        <Tag color="cyan">
+                          {moment(meal.date).format('hh:mm:ss')}
+                        </Tag>
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Collapse.Panel>
+          );
+        })
       }
-    </div>
+    </Collapse>
   );
 };
 

@@ -54,7 +54,7 @@ const LayoutComponent = (props: Props) => {
         </Tooltip>
         {authenticated && (
         <div>
-          {user?.role === 'user' && <Button type="primary" shape="round" onClick={() => router.push('/addmeal')}>Add Meal</Button>}
+          {user?.role === 'user' ? <Button type="primary" shape="round" onClick={() => router.push('/addmeal')}>Add Meal</Button> : <div />}
           <Button type="primary" shape="round" onClick={() => showShare(true)}>Share</Button>
           <Button id={styles.logout} shape="round" onClick={logoutUser}>Logout</Button>
         </div>

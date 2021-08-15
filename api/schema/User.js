@@ -1,6 +1,8 @@
 const { Schema, model } = require('mongoose');
 const validator = require('validator');
 
+const { CALORIE_LIMIT = 2100 } = process.env;
+
 const User = new Schema(
   {
     name: { type: String, required: [true, 'Name is required'] },
@@ -18,8 +20,9 @@ const User = new Schema(
       required: [true, 'Password is required'],
     },
     role: { type: String, enum: ['user', 'admin'], default: 'user' },
+    calorieLimit: { type: Number, default: Number(CALORIE_LIMIT) },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = model('User', User);

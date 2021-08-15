@@ -8,7 +8,7 @@ const Meal = new Schema(
     date: { type: Date, required: true },
     user: { type: Schema.Types.ObjectId, ref: 'User' },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = model('Meal', Meal);
