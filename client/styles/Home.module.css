@@ -1,9 +1,6 @@
 .container {
   background: #fff;
   margin: 0 auto;
-  padding-top: 60px;
-  height: 100vh;
-  min-height: 100vh;
 }
 
 .container h1 {
