@@ -1,13 +1,14 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { details, login } from './authAPI';
-import { users } from './userAPI';
+import { users, report, share } from './userAPI';
 
 export interface User {
   name: string;
   email: string;
   role: string;
   _id: string;
+  calorieLimit: number;
 }
 
 export interface UserState {
@@ -16,6 +17,9 @@ export interface UserState {
   loading: boolean;
   error: string;
   users: any;
+  report: any;
+  shareDetails: any;
+  shareError: string;
 }
 
 const initialState: UserState = {
@@ -24,6 +28,9 @@ const initialState: UserState = {
   loading: false,
   error: '',
   users: [],
+  report: [],
+  shareDetails: null,
+  shareError: '',
 };
 
 export const userLogin = createAsyncThunk(
@@ -55,6 +62,30 @@ export const getUsers = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const { data } = await users();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  },
+);
+
+export const getReport = createAsyncThunk(
+  'user/report',
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await report();
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.response.data.message);
+    }
+  },
+);
+
+export const shareUser = createAsyncThunk(
+  'user/share',
+  async (shareData: any, { rejectWithValue }) => {
+    try {
+      const { data } = await share(shareData);
       return data;
     } catch (error) {
       return rejectWithValue(error.response.data.message);
@@ -110,7 +141,30 @@ export const userSlice = createSlice({
         state.loading = false;
         state.users = action.payload;
       })
-      .addCase(getUsers.rejected, rejected);
+      .addCase(getUsers.rejected, rejected)
+      .addCase(getReport.pending, (state) => {
+        state.loading = true;
+        state.report = [];
+      })
+      .addCase(getReport.fulfilled, (state, action) => {
+        state.loading = false;
+        state.report = action.payload;
+      })
+      .addCase(getReport.rejected, rejected)
+      .addCase(shareUser.pending, (state) => {
+        state.loading = true;
+        state.shareDetails = null;
+        state.shareError = '';
+      })
+      .addCase(shareUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.shareDetails = action.payload;
+        state.shareError = '';
+      })
+      .addCase(shareUser.rejected, (state: UserState, action: PayloadAction<any>) => {
+        state.shareError = action.payload as string;
+        state.loading = false;
+      });
   },
 });
 

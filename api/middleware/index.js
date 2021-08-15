@@ -10,12 +10,15 @@ const roles = {
     update: true,
     addmeal: true,
     mealDetails: true,
+    report: true,
+    share: true,
   },
   user: {
     selfMeals: true,
     addmeal: true,
     users: false,
     details: true,
+    share: true,
   },
 };
 

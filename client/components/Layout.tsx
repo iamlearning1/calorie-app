@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import Share from './Share';
 
 import { useAppSelector, useAppDispatch } from '../app/hooks';
-import { logout, userDetails } from '../app/userSlice';
+import { logout, userDetails, shareUser } from '../app/userSlice';
 
 import styles from '../styles/Layout.module.css';
 
@@ -27,6 +27,8 @@ const LayoutComponent = (props: Props) => {
   const user = useAppSelector((state) => state.user.user);
 
   const [share, showShare] = useState(false);
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
 
   const logoutUser = () => {
     dispatch(logout());
@@ -34,7 +36,9 @@ const LayoutComponent = (props: Props) => {
   };
 
   const shareWithUser = () => {
-
+    dispatch(shareUser({ name, email }));
+    setEmail('');
+    setName('');
   };
 
   useEffect(() => {
@@ -45,8 +49,13 @@ const LayoutComponent = (props: Props) => {
 
   return (
     <Layout>
-      <Modal visible={share} onOk={shareWithUser} onCancel={() => showShare(false)} title="Share">
-        <Share />
+      <Modal visible={share} onOk={shareWithUser} onCancel={() => showShare(false)} title="Share" okText="Share">
+        <Share
+          name={name}
+          setName={setName}
+          email={email}
+          setEmail={setEmail}
+        />
       </Modal>
       <Header className={styles.header}>
         <Tooltip title="Go to home" placement="bottomLeft">
@@ -54,7 +63,9 @@ const LayoutComponent = (props: Props) => {
         </Tooltip>
         {authenticated && (
         <div>
-          {user?.role === 'user' ? <Button type="primary" shape="round" onClick={() => router.push('/addmeal')}>Add Meal</Button> : <div />}
+          {user?.role === 'user'
+            ? <Button type="primary" shape="round" onClick={() => router.push('/addmeal')}>Add Meal</Button>
+            : <div />}
           <Button type="primary" shape="round" onClick={() => showShare(true)}>Share</Button>
           <Button id={styles.logout} shape="round" onClick={logoutUser}>Logout</Button>
         </div>

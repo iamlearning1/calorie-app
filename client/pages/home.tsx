@@ -1,4 +1,5 @@
-import { Space, Typography } from 'antd';
+import { Button, Space, Typography } from 'antd';
+import { useRouter } from 'next/router';
 
 import Meals from '../components/Meals';
 import Users from '../components/Users';
@@ -8,19 +9,30 @@ import { useAppSelector } from '../app/hooks';
 import styles from '../styles/Home.module.css';
 
 const Home = () => {
+  const router = useRouter();
+
   const user = useAppSelector((state) => state.user.user);
-  const authenticated = useAppSelector((state) => state.user.authenticated);
 
   return (
     <div className={styles.container}>
-      <Typography.Title>
-        Welcome
-        {' '}
-        {user?.name}
-      </Typography.Title>
+      <div className={styles.title}>
+        <Typography.Title>
+          Welcome
+          {' '}
+          {user?.name}
+        </Typography.Title>
+        {user?.role === 'admin' && (
+        <Button
+          onClick={() => router.push('/report')}
+          type="primary"
+        >
+          Weekly Reports
+        </Button>
+        )}
+      </div>
       <Space />
-      {authenticated && user?.role === 'user' && <Meals />}
-      {authenticated && user?.role === 'admin' && <Users />}
+      {user?.role === 'user' && <Meals />}
+      {user?.role === 'admin' && <Users />}
     </div>
   );
 };

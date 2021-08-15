@@ -42,7 +42,7 @@ const Users = () => {
             >
               Add meal
             </Button>
-)}
+          )}
         >
           <List
             dataSource={user.meals}

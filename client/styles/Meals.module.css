@@ -3,14 +3,13 @@
 }
 
 .list {
-  width: 80%;
   margin: 0 auto;
   margin-bottom: 50px;
 }
 
 .calories {
   font-size: 20px;
-  padding: 10px;
+  padding: 5px 15px 5px 15px;
 }
 
 .meals {

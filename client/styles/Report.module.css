@@ -1,0 +1,37 @@
+.container {
+  width: 80%;
+  margin: 0 auto;
+  margin-bottom: 50px;
+}
+
+.header {
+  font-weight: bold;
+  font-size: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.meal {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: baseline;
+  justify-content: center;
+}
+
+.meal div {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.meal div span:first-child {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.meal div span:nth-child(2) {
+  font-weight: bold;
+  text-transform: capitalize;
+  justify-self: end;
+}

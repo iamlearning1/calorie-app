@@ -63,7 +63,7 @@ const meals = async (req, res) => {
   try {
     const userMeals = await Meal.find({
       user: req.user._id,
-    });
+    }).lean();
 
     if (!userMeals.length) throw new Error('No meals found');
 

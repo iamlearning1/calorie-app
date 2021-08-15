@@ -114,7 +114,7 @@ export const mealSlice = createSlice({
         state.meals = action.payload.reduce((acc: any, m: any) => {
           const mealDate = moment(m.date).format('DD-MMM-YY');
           acc[mealDate] = acc[mealDate] || [];
-          acc[mealDate].push(meal);
+          acc[mealDate].push(m);
           return acc;
         }, {});
       })

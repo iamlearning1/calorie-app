@@ -12,6 +12,7 @@ const Meals = () => {
 
   const loading = useAppSelector((state) => state.meal.loading);
   const meals: any = useAppSelector((state) => state.meal.meals);
+  const user = useAppSelector((state) => state.user.user);
 
   useEffect(() => {
     dispatch(getMeals());
@@ -29,11 +30,17 @@ const Meals = () => {
               key={date}
               header={date}
               extra={(
-                <Tag color="blue" className={styles.calories}>
-                  Calories:
-                  {calories}
-                </Tag>
-)}
+                <>
+                  <Tag color="blue" className={styles.calories}>
+                    Calories:
+                    {calories}
+                  </Tag>
+                  <Tag color="red" className={styles.calories}>
+                    Limit:
+                    {user?.calorieLimit}
+                  </Tag>
+                </>
+              )}
               className={styles.panel}
             >
               <div className={styles.meals}>
