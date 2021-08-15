@@ -1,7 +1,10 @@
 import {
-  Button, Card, Input, Typography, Form,
+  Button, Card, Input, Typography, Form, message,
 } from 'antd';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+
+import api from '../utils/api'; 
 
 import styles from '../styles/Login.module.css';
 
@@ -12,14 +15,29 @@ const Extra = (
 );
 
 const Signup = () => {
-  const onFinish = (values :any) => {
-    console.log(values);
-  };
+  const router = useRouter();
 
   const validateMessages = {
     types: {
       email: 'Not a valid email!',
     },
+  };
+
+  const onFinish = async (values :any) => {
+    try {
+      const {data} = await api.post('/user/signup', {
+        name: values.Name,
+        email: values.Email,
+        password: values.Password,
+      })
+
+      message.success(data.message);
+      message.info('Please login with your newely created account' , 1000)
+      router.push('/');
+    } catch (error) {
+      console.error(error)
+      message.error(error.message.data.message)
+    }
   };
 
   return (
@@ -34,26 +52,36 @@ const Signup = () => {
           validateMessages={validateMessages}
         >
           <Form.Item
-            name="name"
-            rules={[{ required: true, message: 'Please enter a name' }]}
+            name="Name"
+            rules={[{ required: true, min: 2, type: 'string' }]}
           >
             <Input placeholder="Please enter your name" type="text" size="large" />
           </Form.Item>
           <Form.Item
-            name="email"
+            name="Email"
             rules={[{ type: 'email' }]}
           >
             <Input placeholder="Please enter your email" type="email" size="large" />
           </Form.Item>
           <Form.Item
-            name="password"
-            rules={[{ required: true, message: 'Please enter a password' }]}
+            name="Password"
+            rules={[{ required: true, min: 8, type: 'string' }]}
           >
             <Input placeholder="Please enter your password" type="password" size="large" />
           </Form.Item>
           <Form.Item
-            name="confirm"
-            rules={[{ required: true, message: 'Please enter a password' }]}
+            name="Confirm Password"
+            dependencies={['Password']}
+            rules={[{ required: true, type: 'string' }, 
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue('Password') === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error('Passwords do not match!'));
+              },
+            }),
+          ]}
           >
             <Input placeholder="Please confirm your password" type="password" size="large" />
           </Form.Item>

@@ -9,7 +9,7 @@ const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).lean();
 
     if (!user) throw new Error(`User with email ${email} not found`);
 
@@ -18,10 +18,10 @@ const login = async (req, res) => {
     if (!passwordValid)
       throw new Error(`User with email ${email} password not valid`);
 
+    delete user.password;
+
     return res.send({
-      email: user.email,
-      id: user._id,
-      role: user.role,
+      ...user,
       token: generateToken(user._id, user.email),
     });
   } catch (error) {
@@ -47,7 +47,7 @@ const signup = async (req, res) => {
       `User with email ${email} created successfully, User ID: ${user._id}`
     );
 
-    return res.send({ message: 'User created successfully ' });
+    return res.send({ message: 'User created successfully' });
   } catch (error) {
     console.error(error);
     return res
@@ -56,4 +56,15 @@ const signup = async (req, res) => {
   }
 };
 
-module.exports = { login, signup };
+const details = async (req, res) => {
+  const { user } = req;
+
+  try {
+    return res.send({ ...user, token: generateToken(user._id, user.email) });
+  } catch (error) {
+    console.error(error);
+    return res.status(400).send({ message: 'Something went wrong' });
+  }
+};
+
+module.exports = { login, signup, details };

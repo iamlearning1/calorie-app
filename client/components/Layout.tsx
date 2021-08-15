@@ -1,11 +1,15 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 import {
   Button, Layout, Tooltip, Modal,
 } from 'antd';
 import { useRouter } from 'next/router';
 
-import styles from '../styles/Layout.module.css';
 import Share from './Share';
+
+import { useAppSelector, useAppDispatch } from '../app/hooks';
+import { logout, userDetails } from '../app/userSlice';
+
+import styles from '../styles/Layout.module.css';
 
 const { Header, Content } = Layout;
 
@@ -17,15 +21,26 @@ const LayoutComponent = (props: Props) => {
   const { children } = props;
   const router = useRouter();
 
+  const dispatch = useAppDispatch();
+
+  const authenticated = useAppSelector(state => state.user.authenticated);
+
   const [share, showShare] = useState(false);
 
-  const logout = () => {
+  const logoutUser = () => {
+    dispatch(logout())
     router.replace('/');
   };
 
   const shareWithUser = () => {
 
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token && !authenticated) dispatch(userDetails());
+    else router.replace('/');
+  }, [])
 
   return (
     <Layout>
@@ -37,10 +52,10 @@ const LayoutComponent = (props: Props) => {
           <h1 onClick={() => router.push('/')}>Calorie Tracking</h1>
 
         </Tooltip>
-        <div>
+        {authenticated && <div>
           <Button id={styles.share} type="primary" shape="round" onClick={() => showShare(true)}>Share</Button>
-          <Button id={styles.logout} shape="round" onClick={logout}>Logout</Button>
-        </div>
+          <Button id={styles.logout} shape="round" onClick={logoutUser}>Logout</Button>
+        </div>}
       </Header>
       <Content className={styles.content}>
         {children}

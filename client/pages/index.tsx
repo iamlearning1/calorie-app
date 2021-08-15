@@ -1,7 +1,12 @@
+import { useEffect } from 'react';
 import {
-  Button, Card, Input, Typography, Form,
+  Button, Card, Input, Typography, Form, message
 } from 'antd';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+
+import { useAppSelector, useAppDispatch } from '../app/hooks';
+import { userLogin } from '../app/userSlice';
 
 import styles from '../styles/Login.module.css';
 
@@ -12,9 +17,24 @@ const Extra = (
 );
 
 const Login = () => {
-  const onFinish = (values :any) => {
-    console.log(values);
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
+  const loading = useAppSelector(state => state.user.loading);
+  const authenticated = useAppSelector(state => state.user.authenticated);
+  const error = useAppSelector(state => state.user.error);
+
+  const onFinish = async (values :any) => {
+    dispatch(userLogin({email: values.Email, password: values.Password}));
   };
+
+  useEffect(() => {
+    if (authenticated) router.replace('/home');
+  }, [authenticated])
+
+  useEffect(() => {
+    if (error) message.error(error);
+  }, [error])
 
   const validateMessages = {
     types: {
@@ -34,19 +54,19 @@ const Login = () => {
           validateMessages={validateMessages}
         >
           <Form.Item
-            name="email"
+            name="Email"
             rules={[{ type: 'email' }]}
           >
             <Input placeholder="Please enter your email" type="email" size="large" />
           </Form.Item>
           <Form.Item
-            name="password"
-            rules={[{ required: true, message: 'Please enter a password' }]}
+            name="Password"
+            rules={[{ required: true }]}
           >
             <Input placeholder="Please enter your password" type="password" size="large" />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" size="large" htmlType="submit">Login</Button>
+            <Button type="primary" size="large" htmlType="submit" disabled={loading} loading={loading}>Login</Button>
           </Form.Item>
         </Form>
       </Card>

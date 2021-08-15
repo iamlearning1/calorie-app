@@ -1,6 +1,7 @@
 require('./db');
 
 const express = require('express');
+const cors = require('cors');
 
 const userRouter = require('./router/user');
 
@@ -18,6 +19,8 @@ app.use(
     extended: true,
   })
 );
+
+app.use(cors());
 
 app.use('/api/user', userRouter);
 

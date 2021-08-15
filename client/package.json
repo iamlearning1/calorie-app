@@ -12,6 +12,7 @@
     "@reduxjs/toolkit": "^1.6.1",
     "@types/react-redux": "^7.1.18",
     "antd": "^4.16.11",
+    "axios": "^0.21.1",
     "husky": "^7.0.1",
     "moment": "^2.29.1",
     "next": "11.1.0",
