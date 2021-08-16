@@ -20,18 +20,20 @@
 }
 
 .meal div {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: 30% 70%;
+  grid-gap: 5px;
+  align-items: baseline;
 }
 
 .meal div span:first-child {
   font-size: 18px;
   font-weight: bold;
+  justify-self: center;
 }
 
 .meal div span:nth-child(2) {
   font-weight: bold;
   text-transform: capitalize;
-  justify-self: end;
+  justify-self: start;
 }

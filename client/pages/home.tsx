@@ -1,4 +1,6 @@
-import { Button, Space, Typography } from 'antd';
+import {
+  Button, Space, Tag, Typography,
+} from 'antd';
 import { useRouter } from 'next/router';
 
 import Meals from '../components/Meals';
@@ -21,6 +23,7 @@ const Home = () => {
           {' '}
           {user?.name}
         </Typography.Title>
+        {user?.role === 'admin' && <Tag color="success">Admin</Tag>}
         {user?.role === 'admin' && (
         <Button
           onClick={() => router.push('/report')}

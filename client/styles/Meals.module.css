@@ -39,3 +39,7 @@
   text-transform: capitalize;
   justify-self: end;
 }
+
+.meal button {
+  font-size: 20px;
+}

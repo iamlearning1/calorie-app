@@ -1,5 +1,8 @@
 import { useEffect } from 'react';
-import { Spin, Tag, Collapse } from 'antd';
+import {
+  Spin, Tag, Collapse, Button,
+} from 'antd';
+import { useRouter } from 'next/router';
 import moment from 'moment';
 
 import { useAppSelector, useAppDispatch } from '../app/hooks';
@@ -8,6 +11,8 @@ import { getMeals } from '../app/mealSlice';
 import styles from '../styles/Meals.module.css';
 
 const Meals = () => {
+  const router = useRouter();
+
   const dispatch = useAppDispatch();
 
   const loading = useAppSelector((state) => state.meal.loading);
@@ -80,6 +85,13 @@ const Meals = () => {
                         </Tag>
                       </span>
                     </div>
+                    <Button
+                      type="link"
+                      size="small"
+                      onClick={() => router.push(`/addmeal?mealId=${meal._id}`)}
+                    >
+                      Update
+                    </Button>
                   </div>
                 ))}
               </div>

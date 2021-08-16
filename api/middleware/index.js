@@ -16,9 +16,10 @@ const roles = {
   user: {
     selfMeals: true,
     addmeal: true,
-    users: false,
     details: true,
     share: true,
+    mealDetails: true,
+    update: true,
   },
 };
 

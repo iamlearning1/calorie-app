@@ -13,3 +13,8 @@
   align-items: center;
   justify-content: space-between;
 }
+
+.title > span {
+  font-size: 20px;
+  padding: 10px;
+}
