@@ -32,7 +32,7 @@ const Signup = () => {
       });
 
       message.success(data.message);
-      message.info('Please login with your newely created account', 1000);
+      message.info('Please login with your newely created account');
       router.push('/');
     } catch (error) {
       message.error(error.message.data.message);

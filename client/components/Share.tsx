@@ -11,7 +11,10 @@ interface Props {
 
 const Share = (props: Props) => {
   const {
-    name, setName, email, setEmail,
+    name, 
+    setName, 
+    email, 
+    setEmail,
   } = props;
 
   const shareDetails = useAppSelector((state) => state.user.shareDetails);
@@ -22,9 +25,9 @@ const Share = (props: Props) => {
       <Input
         placeholder="Name"
         type="text"
-        style={{ marginBottom: '20px' }}
         value={name}
         onChange={(e) => setName(e.target.value)}
+        style={{ marginBottom: '20px' }}
       />
       <Input
         placeholder="Email"
@@ -33,10 +36,9 @@ const Share = (props: Props) => {
         onChange={(e) => setEmail(e.target.value)}
         style={{ marginBottom: '20px' }}
       />
-
+      
       {shareDetails && <Alert message={`Password: ${shareDetails.password}`} type="info" closable />}
       {shareDetails && <Alert message={`Token: ${shareDetails.token}`} type="info" closable />}
-
       {error && <Alert type="error" message={error} closable />}
     </div>
   );

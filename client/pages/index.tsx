@@ -24,7 +24,7 @@ const Login = () => {
   const authenticated = useAppSelector((state) => state.user.authenticated);
   const error = useAppSelector((state) => state.user.error);
 
-  const onFinish = async (values :any) => {
+  const onFinish = async (values: any) => {
     dispatch(userLogin({ email: values.Email, password: values.Password }));
   };
 
@@ -63,7 +63,7 @@ const Login = () => {
             name="Password"
             rules={[{ required: true }]}
           >
-            <Input placeholder="Please enter your password" type="password" size="large" />
+            <Input.Password placeholder="Please enter your password" type="password" size="large" />
           </Form.Item>
           <Form.Item>
             <Button type="primary" size="large" htmlType="submit" disabled={loading} loading={loading}>Login</Button>

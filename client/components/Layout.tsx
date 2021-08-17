@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import Share from './Share';
 
 import { useAppSelector, useAppDispatch } from '../app/hooks';
-import { logout, userDetails, shareUser } from '../app/userSlice';
+import { logout, userDetails, shareUser, resetShare } from '../app/userSlice';
 
 import styles from '../styles/Layout.module.css';
 
@@ -44,8 +44,12 @@ const LayoutComponent = (props: Props) => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token && !authenticated) dispatch(userDetails());
-    else router.replace('/');
+    else router.replace(router.pathname);
   }, []);
+
+  useEffect(() => {
+    if (!share) dispatch(resetShare());
+  }, [share])
 
   return (
     <Layout>

@@ -1,9 +1,11 @@
 import {
-  Typography, Spin, Collapse, List, Tag, Alert,
+  Typography, Collapse, List, Tag, Alert, Button,
 } from 'antd';
 import { useEffect } from 'react';
+import Link from 'next/link';
 import moment from 'moment';
 
+import Loader from '../components/Loader';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { getReport } from '../app/userSlice';
 
@@ -14,13 +16,13 @@ const Report = () => {
 
   const loading = useAppSelector((state) => state.user.loading);
   const report = useAppSelector((state) => state.user.report);
-  const error = useAppSelector((state) => state.user.error);
+  const error = useAppSelector((state) => state.user.shareError);
 
   useEffect(() => {
     dispatch(getReport());
   }, []);
 
-  if (loading) return <div className={styles.container}><Spin /></div>;
+  if (loading) return <Loader />;
 
   const listItem = (item: any) => (
     <List.Item className={styles.meal}>
@@ -65,10 +67,10 @@ const Report = () => {
     <div className={styles.container}>
       <Typography.Title>Reports</Typography.Title>
       {error && (
-      <Alert
-        message={`${error} - Go back to home by clicking the title on the top left`}
-        type="error"
-      />
+        <Alert
+          message={<span>{error} - <Link href="/"><Button type="link">Go back</Button></Link></span>}
+          type="error"
+        />
       )}
       <Collapse>
         {report.map((user: any) => (
@@ -86,7 +88,7 @@ const Report = () => {
                     {(user.currentWeekMeals.reduce(countCalories, 0) / 7).toFixed(2)}
                   </Tag>
                 </div>
-            )}
+              )}
               dataSource={user.currentWeekMeals}
               renderItem={(item: any) => listItem(item)}
             />
@@ -100,7 +102,7 @@ const Report = () => {
                     {(user.lastWeekMeals.reduce(countCalories, 0) / 7).toFixed(2)}
                   </Tag>
                 </div>
-          )}
+              )}
               dataSource={user.lastWeekMeals}
               renderItem={(item: any) => listItem(item)}
             />

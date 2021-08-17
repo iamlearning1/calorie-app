@@ -20,6 +20,7 @@ export interface UserState {
   report: any;
   shareDetails: any;
   shareError: string;
+  resourceError: string;
 }
 
 const initialState: UserState = {
@@ -31,6 +32,7 @@ const initialState: UserState = {
   report: [],
   shareDetails: null,
   shareError: '',
+  resourceError: ''
 };
 
 export const userLogin = createAsyncThunk(
@@ -108,6 +110,10 @@ export const userSlice = createSlice({
       state.error = '';
       localStorage.removeItem('token');
     },
+    resetShare: (state) => {
+      state.shareDetails = null;
+      state.shareError = '';
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -130,6 +136,7 @@ export const userSlice = createSlice({
         state.user = action.payload;
         state.authenticated = true;
         state.error = '';
+        state.loading = false
         localStorage.setItem('token', action.payload.token);
       })
       .addCase(userDetails.rejected, rejected)
@@ -145,12 +152,16 @@ export const userSlice = createSlice({
       .addCase(getReport.pending, (state) => {
         state.loading = true;
         state.report = [];
+        state.resourceError = '';
       })
       .addCase(getReport.fulfilled, (state, action) => {
         state.loading = false;
         state.report = action.payload;
       })
-      .addCase(getReport.rejected, rejected)
+      .addCase(getReport.rejected, (state: UserState, action: PayloadAction<any>) => {
+        state.shareError = action.payload as string;
+        state.loading = false;
+      })
       .addCase(shareUser.pending, (state) => {
         state.loading = true;
         state.shareDetails = null;
@@ -162,12 +173,12 @@ export const userSlice = createSlice({
         state.shareError = '';
       })
       .addCase(shareUser.rejected, (state: UserState, action: PayloadAction<any>) => {
-        state.shareError = action.payload as string;
         state.loading = false;
+        state.shareError = action.payload as string;
       });
   },
 });
 
-export const { logout } = userSlice.actions;
+export const { logout, resetShare } = userSlice.actions;
 
 export default userSlice.reducer;

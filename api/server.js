@@ -1,6 +1,9 @@
+require('dotenv').config();
+
 require('./db');
 
 const express = require('express');
+const morgan = require('morgan');
 const cors = require('cors');
 
 const userRouter = require('./router/user');
@@ -18,10 +21,12 @@ app.use(
   urlencoded({
     limit: '50mb',
     extended: true,
-  }),
+  })
 );
 
 app.use(cors());
+
+app.use(morgan('combined'));
 
 app.use('/api/user', userRouter);
 app.use('/api/meal', mealRouter);

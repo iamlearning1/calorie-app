@@ -8,10 +8,11 @@ client/out/
 client/build
 client/npm-debug.log*
 client/.env.*
-client/.DS_Store
 
 # api
 api/node_modules
 api/.DS_Store
+api/.env
 
+*/.DS_Store
 .DS_Store

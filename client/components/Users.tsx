@@ -1,10 +1,9 @@
 import { useEffect } from 'react';
-import {
-  Spin, Typography, Collapse, List, Button,
-} from 'antd';
+import { Typography, Collapse, List, Button } from 'antd';
 import { useRouter } from 'next/router';
 import moment from 'moment';
 
+import Loader from './Loader';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { getUsers } from '../app/userSlice';
 import { deleteMeal } from '../app/mealSlice';
@@ -27,7 +26,7 @@ const Users = () => {
     dispatch(getUsers());
   };
 
-  if (loading) return <div className={styles.container}><Spin /></div>;
+  if (loading) return <Loader />
 
   return (
     <Collapse className={styles.list}>
